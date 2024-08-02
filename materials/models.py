@@ -15,8 +15,8 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    title = models.CharField(max_length=255, verbose_name='название')
-    description = models.TextField(max_length=250, verbose_name='описание')
+    title = models.CharField(max_length=255, verbose_name='Название урока')
+    description = models.TextField(max_length=250, verbose_name='Описание урока')
     video = models.FileField(upload_to='materials/video', **NULLABLE)
     preview = models.ImageField(upload_to='materials/image', **NULLABLE)
 
