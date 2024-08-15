@@ -84,4 +84,3 @@ class Payments(models.Model):
         verbose_name = 'Оплата'
         verbose_name_plural = 'Оплаты'
         ordering = ('-date_payment',)
-Implement CRUD for users, including user registration, configure the project to use JWT authorization, and close each endpoint with authorization.
