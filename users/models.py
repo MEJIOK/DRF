@@ -11,7 +11,7 @@ NULLABLE = {"blank": True, "null": True}
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError('The Email field must be set')
+            raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -19,68 +19,89 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True.')
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        if extra_fields.get("is_staff") is not True:
+            raise ValueError("Superuser must have is_staff=True.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Superuser must have is_superuser=True.")
         return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = None
 
-    email = models.EmailField(unique=True, max_length=35, verbose_name='Почта')
-    avatar = models.ImageField(upload_to='users/avatars', default='users/avatars/default_avatar.jpg',
-                               verbose_name='Аватар', **NULLABLE)
-    num_phone = models.CharField(unique=True, max_length=35, verbose_name='Телефон', **NULLABLE)
-    country = models.CharField(verbose_name='Страна', **NULLABLE)
+    email = models.EmailField(unique=True, max_length=35, verbose_name="Почта")
+    avatar = models.ImageField(
+        upload_to="users/avatars",
+        default="users/avatars/default_avatar.jpg",
+        verbose_name="Аватар",
+        **NULLABLE,
+    )
+    num_phone = models.CharField(
+        unique=True, max_length=35, verbose_name="Телефон", **NULLABLE
+    )
+    country = models.CharField(verbose_name="Страна", **NULLABLE)
 
-    verification_code = models.CharField(max_length=100, verbose_name='Код подтверждения', **NULLABLE)
+    verification_code = models.CharField(
+        max_length=100, verbose_name="Код подтверждения", **NULLABLE
+    )
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
     def image_tag(self):
         if self.avatar:
-            return mark_safe(f'<img src="{object.avatar}" style="width: 45px; height:45px;" />' % self.avatar)
+            return mark_safe(
+                f'<img src="{object.avatar}" style="width: 45px; height:45px;" />'
+                % self.avatar
+            )
         else:
-            return 'No Image Found'
+            return "No Image Found"
 
-    image_tag.short_description = 'Image'
+    image_tag.short_description = "Image"
 
     def __str__(self):
         return f"{self.email} "
 
     class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"
 
 
 class Payments(models.Model):
     method_variants = (
-        ('cash', 'наличные'),
-        ('transfer', 'перевод'),
+        ("cash", "наличные"),
+        ("transfer", "перевод"),
     )
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    date_payment = models.PositiveSmallIntegerField(verbose_name='Дата оплаты')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='курс', blank=True, null=True)
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='урок', blank=True, null=True)
-    payment_amount = models.PositiveBigIntegerField(verbose_name='Сумма оплаты')
-    payment_method = models.CharField(max_length=80, choices=method_variants, default='transfer',
-                                      verbose_name='способ оплаты')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    date_payment = models.PositiveSmallIntegerField(verbose_name="Дата оплаты")
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, verbose_name="курс", blank=True, null=True
+    )
+    lesson = models.ForeignKey(
+        Lesson, on_delete=models.CASCADE, verbose_name="урок", blank=True, null=True
+    )
+    payment_amount = models.PositiveBigIntegerField(verbose_name="Сумма оплаты")
+    payment_method = models.CharField(
+        max_length=80,
+        choices=method_variants,
+        default="transfer",
+        verbose_name="способ оплаты",
+    )
 
     def __str__(self):
-        return f'Оплата для {self.user}'
+        return f"Оплата для {self.user}"
 
     class Meta:
-        verbose_name = 'Оплата'
-        verbose_name_plural = 'Оплаты'
-        ordering = ('-date_payment',)
+        verbose_name = "Оплата"
+        verbose_name_plural = "Оплаты"
+        ordering = ("-date_payment",)

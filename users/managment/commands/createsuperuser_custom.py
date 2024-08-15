@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 
 
 class Command(BaseCommand):
-    help = 'Create a superuser.'
+    help = "Create a superuser."
 
     def handle(self, *args, **kwargs):
         User = get_user_model()
@@ -21,4 +21,6 @@ class Command(BaseCommand):
         user = User.objects.create_superuser(email=email, password=password)
         user.save()
 
-        self.stdout.write(self.style.SUCCESS(f"Superuser created successfully with email: {email}"))
+        self.stdout.write(
+            self.style.SUCCESS(f"Superuser created successfully with email: {email}")
+        )

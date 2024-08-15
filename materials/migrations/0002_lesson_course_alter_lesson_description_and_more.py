@@ -7,24 +7,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('materials', '0001_initial'),
+        ("materials", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='lesson',
-            name='course',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='lessons', to='materials.course'),
+            model_name="lesson",
+            name="course",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="lessons",
+                to="materials.course",
+            ),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='lesson',
-            name='description',
-            field=models.TextField(max_length=250, verbose_name='Описание урока'),
+            model_name="lesson",
+            name="description",
+            field=models.TextField(max_length=250, verbose_name="Описание урока"),
         ),
         migrations.AlterField(
-            model_name='lesson',
-            name='title',
-            field=models.CharField(max_length=255, verbose_name='Название урока'),
+            model_name="lesson",
+            name="title",
+            field=models.CharField(max_length=255, verbose_name="Название урока"),
         ),
     ]
