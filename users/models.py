@@ -76,32 +76,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Payments(models.Model):
     method_variants = (
-        ("cash", "наличные"),
-        ("transfer", "перевод"),
+        ('cash', 'наличные'),
+        ('transfer', 'перевод'),
     )
 
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, verbose_name="Пользователь"
-    )
-    date_payment = models.PositiveSmallIntegerField(verbose_name="Дата оплаты")
-    course = models.ForeignKey(
-        Course, on_delete=models.CASCADE, verbose_name="курс", blank=True, null=True
-    )
-    lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, verbose_name="урок", blank=True, null=True
-    )
-    payment_amount = models.PositiveBigIntegerField(verbose_name="Сумма оплаты")
-    payment_method = models.CharField(
-        max_length=80,
-        choices=method_variants,
-        default="transfer",
-        verbose_name="способ оплаты",
-    )
+    user = models.ForeignKey(User, max_length=50, on_delete=models.CASCADE, related_name='Пользователь', **NULLABLE),
+    date_of_payment = models.DateTimeField(auto_now_add=True, verbose_name='Дата оплаты'),
+    paid_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Оплаченный курс", **NULLABLE),
+    paid_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name="Оплаченный урок", **NULLABLE),
+    payment_sum = models.PositiveIntegerField(verbose_name='Cумма пожертвования', help_text="Укажите сумму "
+                                                                                            "пожертвования")
+
+    payment_method = models.CharField(max_length=50, choices=method_variants, verbose_name='Способ оплаты')
+
+    session_id = models.CharField(max_length=255, verbose_name='Id сессии', help_text="Укажите ID сессии", **NULLABLE)
+    link = models.URLField(max_length=400, verbose_name='Cсылка на оплату',
+                           help_text="Укажите ссылку на оплату", **NULLABLE)
 
     def __str__(self):
         return f"Оплата для {self.user}"
 
     class Meta:
-        verbose_name = "Оплата"
-        verbose_name_plural = "Оплаты"
-        ordering = ("-date_payment",)
+        verbose_name = "Пожертвование"
+        verbose_name_plural = "Пожертвования"
