@@ -14,4 +14,4 @@ class LessonAdmin(admin.ModelAdmin):
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    list_display = ('course', 'user')
+    list_display = ("course", "user")

@@ -13,8 +13,9 @@ class Course(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         **NULLABLE,
-        verbose_name="владелец",)
-    url = models.URLField(max_length=150, verbose_name='Ссылка', **NULLABLE)
+        verbose_name="владелец",
+    )
+    url = models.URLField(max_length=150, verbose_name="Ссылка", **NULLABLE)
 
     def __str__(self):
         return f"{self.title}"
@@ -34,8 +35,9 @@ class Lesson(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         **NULLABLE,
-        verbose_name="владелец",)
-    url = models.URLField(max_length=150, verbose_name='Ссылка', **NULLABLE)
+        verbose_name="владелец",
+    )
+    url = models.URLField(max_length=150, verbose_name="Ссылка", **NULLABLE)
 
     def __str__(self):
         return f"{self.title}"
@@ -47,8 +49,14 @@ class Lesson(models.Model):
 
 class Subscription(models.Model):
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="Курс", )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Пользователь"
+    )
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE,
+        related_name="Курс",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_user_email(self):
@@ -60,4 +68,4 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = "Подписка"
         verbose_name_plural = "Подписки"
-        unique_together = ('user', 'course')
+        unique_together = ("user", "course")

@@ -32,8 +32,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
 
     email = models.EmailField(unique=True, max_length=35, verbose_name="Почта")
-    avatar = models.ImageField(upload_to='media/users/avatars', default='media/users/avatars/default_avatar.jpg',
-                               verbose_name='Аватар', **NULLABLE)
+    avatar = models.ImageField(
+        upload_to="media/users/avatars",
+        default="media/users/avatars/default_avatar.jpg",
+        verbose_name="Аватар",
+        **NULLABLE,
+    )
     num_phone = models.CharField(
         unique=True, max_length=35, verbose_name="Телефон", **NULLABLE
     )
