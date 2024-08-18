@@ -1,5 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.safestring import mark_safe
 
@@ -32,12 +32,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     username = None
 
     email = models.EmailField(unique=True, max_length=35, verbose_name="Почта")
-    avatar = models.ImageField(
-        upload_to="users/avatars",
-        default="users/avatars/default_avatar.jpg",
-        verbose_name="Аватар",
-        **NULLABLE,
-    )
+    avatar = models.ImageField(upload_to='media/users/avatars', default='media/users/avatars/default_avatar.jpg',
+                               verbose_name='Аватар', **NULLABLE)
     num_phone = models.CharField(
         unique=True, max_length=35, verbose_name="Телефон", **NULLABLE
     )
